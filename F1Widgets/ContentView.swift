@@ -8,6 +8,7 @@
 import SwiftUI
 import WidgetKit
 
+// Hi!
 protocol DictionaryConvertor {
     func toDictionary() -> [String : Any]
 }
