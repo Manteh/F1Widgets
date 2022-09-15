@@ -25,7 +25,9 @@ class F1DataService {
             let races = raceTable["Races"] as? [[String: Any]] else { return }
 
             guard let upcomingRace = races.first(where: {
-                $0["date"] as? String == "2022-10-02"
+                let dateString = String($0["date"] as? String ?? "")
+                let daysLeft = dateString.stringDateToDaysLeft()
+                return Int(daysLeft) ?? -1 >= 0
             }) else { return }
 
             guard let jsonData = try? JSONSerialization.data(withJSONObject: upcomingRace),
@@ -174,7 +176,8 @@ extension String {
 
 extension Calendar {
     func getDaysBetween(from: Date, to: Date) -> Int {
-        let numberOfDays = dateComponents([.day], from: from, to: to)
-        return numberOfDays.day! + 1
+        var numberOfDays = dateComponents([.day], from: from, to: to)
+        guard var days = numberOfDays.day else { return 0 }
+        return days < 0 ? days : days + 1
     }
 }
