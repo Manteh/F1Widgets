@@ -55,7 +55,7 @@ struct F1WidgetsExtensionEntryView : View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 50)
-                Text(entry.race?.raceName ?? "")
+                Text(entry.race?.raceName ?? "-")
                     .bold()
                     .font(.system(size: 10))
             }
@@ -65,11 +65,11 @@ struct F1WidgetsExtensionEntryView : View {
                         .bold()
                         .font(.system(size: 10))
                     Divider()
-                    Text(entry.race?.time.convertUTCToLocal() ?? "")
+                    Text(entry.race?.time.convertUTCToLocal() ?? "-")
                         .bold()
                         .font(.system(size: 10))
                 }
-                Text(entry.race?.circuit.circuitName ?? "")
+                Text(entry.race?.circuit.circuitName ?? "-")
                     .bold()
                     .font(.system(size: 10))
             }
