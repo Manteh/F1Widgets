@@ -15,29 +15,34 @@ struct Provider: IntentTimelineProvider {
     }
 
     func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), configuration: configuration)
-        completion(entry)
+        F1DataService.shared.getUpcomingRace { race in
+            let entry = SimpleEntry(date: Date(), configuration: configuration, race: race)
+            completion(entry)
+        }
     }
 
     func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [SimpleEntry] = []
 
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
-            entries.append(entry)
-        }
+        F1DataService.shared.getUpcomingRace { race in
+            // Generate a timeline consisting of five entries an hour apart, starting from the current date.
+            let currentDate = Date()
+            for hourOffset in 0 ..< 5 {
+                let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
+                let entry = SimpleEntry(date: entryDate, configuration: configuration, race: race)
+                entries.append(entry)
+            }
 
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
+            let timeline = Timeline(entries: entries, policy: .atEnd)
+            completion(timeline)
+        }
     }
 }
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationIntent
+    var race: Race?
 }
 
 struct F1WidgetsExtensionEntryView : View {
@@ -50,27 +55,28 @@ struct F1WidgetsExtensionEntryView : View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 50)
-                Text("Singapore Grand Prix")
+                Text(entry.race?.raceName ?? "")
                     .bold()
                     .font(.system(size: 10))
             }
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
-                    Text("Starts in 18 days")
+                    Text("Starts in \(entry.race?.date.stringDateToDaysLeft() ?? "-") days")
                         .bold()
                         .font(.system(size: 10))
                     Divider()
-                    Text("14:00")
+                    Text(entry.race?.time.convertUTCToLocal() ?? "")
                         .bold()
                         .font(.system(size: 10))
                 }
-                Text("Marina Bay Street Circuit")
+                Text(entry.race?.circuit.circuitName ?? "")
                     .bold()
                     .font(.system(size: 10))
             }
         }
         .widgetURL(URL(string: "widget://link0")!)
     }
+
 }
 
 @main
