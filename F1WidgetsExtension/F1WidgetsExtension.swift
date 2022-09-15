@@ -61,9 +61,7 @@ struct F1WidgetsExtensionEntryView : View {
             }
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
-                    Text("Starts in \(entry.race?.date.stringDateToDaysLeft() ?? "-") days")
-                        .bold()
-                        .font(.system(size: 10))
+                    raceStartTextView
                     Divider()
                     Text(entry.race?.time.convertUTCToLocal() ?? "-")
                         .bold()
@@ -75,6 +73,31 @@ struct F1WidgetsExtensionEntryView : View {
             }
         }
         .widgetURL(URL(string: "widget://link0")!)
+    }
+
+    var raceStartTextView: some View {
+        Text(daysLeftStringified())
+            .bold()
+            .font(.system(size: 10))
+    }
+
+    func daysLeftStringified() -> String {
+        let daysLeft = Int(String(entry.race?.date ?? "").stringDateToDaysLeft()) ?? -1
+
+        var startsInText: String = {
+            switch daysLeft {
+            case let x where x > 0:
+                return "Starts in \(daysLeft) days"
+            case let x where x == 0:
+                return "🏁 Starts today!"
+            case let x where x < 0:
+                return ""
+            default:
+                return ""
+            }
+        }()
+
+        return startsInText
     }
 
 }
