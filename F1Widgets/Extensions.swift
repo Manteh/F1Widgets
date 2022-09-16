@@ -40,18 +40,22 @@ extension String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let toDate = dateFormatter.date(from: self) ?? Date()
-        let daysLeft = Calendar.current.getDaysBetween(from: Date(), to: toDate)
+        let fromDate = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: Date()))
+        let toDate = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: dateFormatter.date(from: self) ?? Date()))
+
+        guard let to = toDate, let from = fromDate else { return "" }
+
+        let daysLeft = Calendar.current.getDaysBetween(from: from, to: to)
         return String(daysLeft)
     }
 }
 
 // MARK: - Calendar Extension
 extension Calendar {
-    func getDaysBetween(from: Date, to: Date) -> Int {
-        var numberOfDays = dateComponents([.day], from: from, to: to)
-        guard var days = numberOfDays.day else { return 0 }
-        return days <= 0 ? days : days + 1
+    func getDaysBetween(from: Date, to: Date) -> String {
+        let numberOfDays = dateComponents([.day], from: from, to: to)
+        guard let days = numberOfDays.day else { return "" }
+        return String(days)
     }
 }
 

@@ -57,4 +57,24 @@ class F1DataService {
         }
         task.resume()
     }
+
+    func daysLeftStringified(date: String?) -> String {
+        let daysLeft = Int(String(date ?? "-1").stringDateToDaysLeft()) ?? -1
+        let startsInText: String = {
+            switch daysLeft {
+            case _ where daysLeft > 1:
+                return "Starts in \(daysLeft) days"
+            case _ where daysLeft == 1:
+                return "Starts tomorrow!"
+            case _ where daysLeft == 0:
+                return "🏁 Starts today!"
+            case _ where daysLeft < 0:
+                return ""
+            default:
+                return ""
+            }
+        }()
+
+        return startsInText
+    }
 }

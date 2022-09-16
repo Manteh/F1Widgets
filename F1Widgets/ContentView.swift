@@ -129,7 +129,6 @@ struct ContentView: View {
 
             var body: some View {
                 F1ListRow(key: child.key, value: child.value as? String ?? "")
-                    .listRowBackground(Color.white)
             }
         }
 

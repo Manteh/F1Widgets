@@ -47,66 +47,128 @@ struct SimpleEntry: TimelineEntry {
 
 struct F1WidgetsExtensionEntryView : View {
     var entry: Provider.Entry
+    private let minSpacerLength: CGFloat = 5
+    private let placeholderHeight: CGFloat = 10
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: minSpacerLength) {
+            HStack(spacing: 0) {
+                logoView
+                Spacer(minLength: minSpacerLength)
+                Divider()
+                Spacer(minLength: minSpacerLength)
+                WidgetLabelView(text: entry.race?.raceName, shouldBeMultiline: true)
+                Spacer(minLength: 0)
+            }
+
+            HStack(spacing: 0) {
+                WidgetLabelView(text: F1DataService.shared.daysLeftStringified(date: entry.race?.date), skeletonWidth: 90)
+                Spacer(minLength: minSpacerLength)
+                Divider()
+                Spacer(minLength: minSpacerLength)
+                WidgetLabelView(text: entry.race?.time.convertUTCToLocal())
+                Spacer(minLength: 0)
+            }
+
             HStack {
-                Image("f1")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 50)
-                Text(entry.race?.raceName ?? "-")
-                    .bold()
-                    .font(.system(size: 10))
+                WidgetLabelView( text: entry.race?.circuit.circuitName)
+                Spacer(minLength: 0)
             }
-            VStack(alignment: .leading, spacing: 0) {
-                HStack {
-                    raceStartTextView
-                    Divider()
-                    Text(entry.race?.time.convertUTCToLocal() ?? "-")
-                        .bold()
-                        .font(.system(size: 10))
-                }
-                Text(entry.race?.circuit.circuitName ?? "-")
-                    .bold()
-                    .font(.system(size: 10))
-            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .widgetURL(URL(string: "widget://link0")!)
     }
 
-    var raceStartTextView: some View {
-        Text(daysLeftStringified())
-            .bold()
-            .font(.system(size: 10))
+    // MARK: - Mini Views
+    var logoView: some View {
+        Image("f1")
+            .resizable()
+            .scaledToFit()
     }
 
-    func daysLeftStringified() -> String {
-        let daysLeft = Int(String(entry.race?.date ?? "").stringDateToDaysLeft()) ?? -1
-
-        var startsInText: String = {
-            switch daysLeft {
-            case let x where x > 0:
-                return "Starts in \(daysLeft) days"
-            case let x where x == 0:
-                return "🏁 Starts today!"
-            case let x where x < 0:
-                return ""
-            default:
-                return ""
+    var githubActivityMap: some View {
+        ZStack {
+            VStack(spacing:0) {
+                HStack(spacing: 0) {
+                    ForEach(0...8, id: \.self) { index in
+                        Rectangle()
+                            .frame(width: 10, height: 10)
+                            .opacity(index % 2 == 0 ? 1 : 0.2)
+                        if index != 8 {
+                            Spacer(minLength: 5)
+                        }
+                    }
+                }
+                Spacer(minLength: 0)
+                HStack(spacing: 0) {
+                    ForEach(0...8, id: \.self) { index in
+                        Rectangle()
+                            .frame(width: 10, height: 10)
+                            .opacity(index % 2 != 0 ? 1 : 0.2)
+                        if index != 8 {
+                            Spacer(minLength: 5)
+                        }
+                    }
+                }
+                Spacer(minLength: 0)
+                HStack(spacing: 0) {
+                    ForEach(0...8, id: \.self) { index in
+                        Rectangle()
+                            .frame(width: 10, height: 10)
+                            .opacity(index % 2 == 0 ? 1 : 0.2)
+                        if index != 8 {
+                            Spacer(minLength: 5)
+                        }
+                    }
+                }
             }
-        }()
-
-        return startsInText
+            .padding(10)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .background(Color.red.opacity(0.2))
+            .cornerRadius(5)
+        }
     }
 
+    struct WidgetLabelView: View {
+        let text: String?
+        let skeletonWidth: CGFloat?
+        let shouldBeMultiline: Bool
+        let skeletonsTestOn = false
+
+        init(text: String?, skeletonWidth: CGFloat? = nil, shouldBeMultiline: Bool = false) {
+            self.text = text
+            self.skeletonWidth = skeletonWidth
+            self.shouldBeMultiline = shouldBeMultiline
+        }
+
+        var body: some View {
+            if let text = text, !skeletonsTestOn {
+                Text(text)
+                    .bold()
+                    .font(.system(size: 10))
+                    .fixedSize(horizontal: shouldBeMultiline ? false : true, vertical: true)
+            } else {
+                if let width = skeletonWidth {
+                    Rectangle()
+                        .opacity(0.2)
+                        .padding(0)
+                        .frame(width: width)
+                } else {
+                    Rectangle()
+                        .opacity(0.2)
+                        .padding(0)
+                }
+            }
+        }
+    }
 }
 
 @main
 struct F1Widgets: WidgetBundle {
-   var body: some Widget {
-       F1WidgetsExtension()
-   }
+    var body: some Widget {
+        F1WidgetsExtension()
+    }
 }
 
 struct F1WidgetsExtension: Widget {
