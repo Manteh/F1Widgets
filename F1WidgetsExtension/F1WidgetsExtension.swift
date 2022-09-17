@@ -87,49 +87,6 @@ struct F1WidgetsExtensionEntryView : View {
             .scaledToFit()
     }
 
-    var githubActivityMap: some View {
-        ZStack {
-            VStack(spacing:0) {
-                HStack(spacing: 0) {
-                    ForEach(0...8, id: \.self) { index in
-                        Rectangle()
-                            .frame(width: 10, height: 10)
-                            .opacity(index % 2 == 0 ? 1 : 0.2)
-                        if index != 8 {
-                            Spacer(minLength: 5)
-                        }
-                    }
-                }
-                Spacer(minLength: 0)
-                HStack(spacing: 0) {
-                    ForEach(0...8, id: \.self) { index in
-                        Rectangle()
-                            .frame(width: 10, height: 10)
-                            .opacity(index % 2 != 0 ? 1 : 0.2)
-                        if index != 8 {
-                            Spacer(minLength: 5)
-                        }
-                    }
-                }
-                Spacer(minLength: 0)
-                HStack(spacing: 0) {
-                    ForEach(0...8, id: \.self) { index in
-                        Rectangle()
-                            .frame(width: 10, height: 10)
-                            .opacity(index % 2 == 0 ? 1 : 0.2)
-                        if index != 8 {
-                            Spacer(minLength: 5)
-                        }
-                    }
-                }
-            }
-            .padding(10)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .background(Color.red.opacity(0.2))
-            .cornerRadius(5)
-        }
-    }
-
     struct WidgetLabelView: View {
         let text: String?
         let skeletonWidth: CGFloat?
