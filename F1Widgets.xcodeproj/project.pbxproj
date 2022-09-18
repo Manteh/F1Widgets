@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		587C4D8828D5107F0003445D /* GithubActivityMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587C4D8728D5107F0003445D /* GithubActivityMapView.swift */; };
 		587C4D8928D5107F0003445D /* GithubActivityMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587C4D8728D5107F0003445D /* GithubActivityMapView.swift */; };
+		587C4D8B28D59D950003445D /* DynamicIsland.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587C4D8A28D59D950003445D /* DynamicIsland.swift */; };
+		587C4D8C28D59D950003445D /* DynamicIsland.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587C4D8A28D59D950003445D /* DynamicIsland.swift */; };
 		58B61BA228D260E900FF7C32 /* F1WidgetsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B61BA128D260E900FF7C32 /* F1WidgetsApp.swift */; };
 		58B61BA428D260E900FF7C32 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B61BA328D260E900FF7C32 /* ContentView.swift */; };
 		58B61BA628D260EA00FF7C32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58B61BA528D260EA00FF7C32 /* Assets.xcassets */; };
@@ -54,6 +56,7 @@
 
 /* Begin PBXFileReference section */
 		587C4D8728D5107F0003445D /* GithubActivityMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubActivityMapView.swift; sourceTree = "<group>"; };
+		587C4D8A28D59D950003445D /* DynamicIsland.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicIsland.swift; sourceTree = "<group>"; };
 		58B61B9E28D260E900FF7C32 /* F1Widgets.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = F1Widgets.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		58B61BA128D260E900FF7C32 /* F1WidgetsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = F1WidgetsApp.swift; sourceTree = "<group>"; };
 		58B61BA328D260E900FF7C32 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -124,6 +127,7 @@
 			children = (
 				58B61BA128D260E900FF7C32 /* F1WidgetsApp.swift */,
 				58B61BA328D260E900FF7C32 /* ContentView.swift */,
+				587C4D8A28D59D950003445D /* DynamicIsland.swift */,
 				58B61BC928D2670B00FF7C32 /* F1DataService.swift */,
 				58B61BCC28D3237D00FF7C32 /* Extensions.swift */,
 				58B61BCF28D323CD00FF7C32 /* Race.swift */,
@@ -268,6 +272,7 @@
 				58B61BA428D260E900FF7C32 /* ContentView.swift in Sources */,
 				58B61BC128D2610200FF7C32 /* F1WidgetsExtension.intentdefinition in Sources */,
 				58B61BD028D323CD00FF7C32 /* Race.swift in Sources */,
+				587C4D8B28D59D950003445D /* DynamicIsland.swift in Sources */,
 				58B61BA228D260E900FF7C32 /* F1WidgetsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,6 +287,7 @@
 				58B61BC028D2610200FF7C32 /* F1WidgetsExtension.intentdefinition in Sources */,
 				58B61BCE28D3237D00FF7C32 /* Extensions.swift in Sources */,
 				58B61BD128D323CD00FF7C32 /* Race.swift in Sources */,
+				587C4D8C28D59D950003445D /* DynamicIsland.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

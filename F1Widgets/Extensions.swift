@@ -41,6 +41,7 @@ extension String {
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let fromDate = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: Date()))
+        //let fromDate = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: NSDate(timeIntervalSince1970: 1666687181) as Date ))
         let toDate = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: dateFormatter.date(from: self) ?? Date()))
 
         guard let to = toDate, let from = fromDate else { return "" }

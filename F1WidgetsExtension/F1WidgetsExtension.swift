@@ -47,34 +47,32 @@ struct SimpleEntry: TimelineEntry {
 
 struct F1WidgetsExtensionEntryView : View {
     var entry: Provider.Entry
-    private let minSpacerLength: CGFloat = 5
-    private let placeholderHeight: CGFloat = 10
+
+    struct FixedSize {
+        let horizontal: Bool
+        let vertical: Bool
+    }
+
+    private let spacing: CGFloat = 10
+    private let fontSize: CGFloat = 10
 
     var body: some View {
-        VStack(alignment: .leading, spacing: minSpacerLength) {
-            HStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 5) {
+            HStack(spacing: spacing) {
                 logoView
-                Spacer(minLength: minSpacerLength)
-                Divider()
-                Spacer(minLength: minSpacerLength)
-                WidgetLabelView(text: entry.race?.raceName, shouldBeMultiline: true)
-                Spacer(minLength: 0)
+                Divider().frame(height: fontSize * 2)
+                WidgetLabelView(text: entry.race?.raceName, fontSize: fontSize, skeletonWidth: 90, sizing: FixedSize(horizontal: false, vertical: true))
             }
 
-            HStack(spacing: 0) {
-                WidgetLabelView(text: F1DataService.shared.daysLeftStringified(date: entry.race?.date), skeletonWidth: 90)
-                Spacer(minLength: minSpacerLength)
-                Divider()
-                Spacer(minLength: minSpacerLength)
-                WidgetLabelView(text: entry.race?.time.convertUTCToLocal())
-                Spacer(minLength: 0)
+            HStack(spacing: spacing) {
+                WidgetLabelView(text: F1DataService.shared.daysLeftStringified(date: entry.race?.date), fontSize: fontSize, skeletonWidth: 90)
+                Circle().frame(width: fontSize, height: fontSize).opacity(0.2)
+                WidgetLabelView(text: entry.race?.time.convertUTCToLocal(), fontSize: fontSize)
             }
 
             HStack {
-                WidgetLabelView( text: entry.race?.circuit.circuitName)
-                Spacer(minLength: 0)
+                WidgetLabelView(text: entry.race?.circuit.circuitName, fontSize: fontSize, sizing: FixedSize(horizontal: false, vertical: false))
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .widgetURL(URL(string: "widget://link0")!)
@@ -89,30 +87,32 @@ struct F1WidgetsExtensionEntryView : View {
 
     struct WidgetLabelView: View {
         let text: String?
+        let fontSize: CGFloat
         let skeletonWidth: CGFloat?
-        let shouldBeMultiline: Bool
         let skeletonsTestOn = false
+        let sizing: FixedSize
 
-        init(text: String?, skeletonWidth: CGFloat? = nil, shouldBeMultiline: Bool = false) {
+        init(text: String?, fontSize: CGFloat, skeletonWidth: CGFloat? = nil, sizing: FixedSize? = nil) {
             self.text = text
+            self.fontSize = fontSize
             self.skeletonWidth = skeletonWidth
-            self.shouldBeMultiline = shouldBeMultiline
+            self.sizing = sizing == nil ? FixedSize(horizontal: false, vertical: false) : sizing!
         }
 
         var body: some View {
             if let text = text, !skeletonsTestOn {
                 Text(text)
                     .bold()
-                    .font(.system(size: 10))
-                    .fixedSize(horizontal: shouldBeMultiline ? false : true, vertical: true)
+                    .font(.system(size: fontSize))
+                    .fixedSize(horizontal: sizing.horizontal, vertical: sizing.vertical)
             } else {
                 if let width = skeletonWidth {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 20)
                         .opacity(0.2)
                         .padding(0)
                         .frame(width: width)
                 } else {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 20)
                         .opacity(0.2)
                         .padding(0)
                 }
